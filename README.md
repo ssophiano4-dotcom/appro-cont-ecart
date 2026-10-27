@@ -1,4 +1,4 @@
-# Claircompta — maquette de gestion documentaire
+# Clair-Contrôle — maquette de gestion documentaire
 
 Prototype responsive de connexion et de navigation pour une application de gestion des factures. Le projet utilise uniquement HTML, CSS et JavaScript natifs.
 
@@ -16,7 +16,7 @@ Aucun serveur ou paquet n'est nécessaire pour afficher la maquette.
 
 - Saisissez un identifiant et un mot de passe non vides, puis choisissez **Se connecter**.
 - La connexion est simulée : elle ne vérifie aucun compte et ne protège pas l'application.
-- Utilisez les onglets **Factures**, **Bons de commande**, **Bons de réception** et **Bons de livraison**. Chaque onglet affiche son espace de substitution « En cours de développement... ».
+- Survolez **Menu** pour afficher les rubriques **Factures**, **Bons de commande**, **Bons de réception** et **Bons de livraison**. Sur mobile, utilisez un appui sur le bouton **Menu**. Chaque rubrique affiche son espace de substitution « En cours de développement... ».
 - **Mot de passe oublié** affiche un message de démonstration ; aucun courriel n'est envoyé.
 - **Déconnexion** revient à l'écran de connexion.
 

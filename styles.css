@@ -124,14 +124,27 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .date-chip { padding: 9px 12px; display: flex; align-items: center; gap: 8px; border: 1px solid #ffffffd9; border-radius: 8px; background: #ffffffad; color: #63718a; font-size: 11px; backdrop-filter: blur(14px); }
 .date-chip svg { width: 16px; height: 16px; color: var(--blue-700); }
 
-.tabs-shell { display: flex; gap: 5px; padding: 7px; border-radius: 12px; }
-.nav-tab { position: relative; min-height: 47px; min-width: 0; padding: 0 14px; display: inline-flex; flex: 1 1 0; align-items: center; justify-content: center; gap: 9px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #66748b; font-size: 12px; font-weight: 650; white-space: nowrap; cursor: pointer; transition: color .15s, border-color .15s, background .15s, box-shadow .15s; }
-.nav-tab > svg { width: 18px; height: 18px; flex: 0 0 auto; }
-.nav-tab:hover { background: #ffffffad; color: var(--blue-800); }
-.nav-tab.is-active { border-color: #d7e4f8; background: linear-gradient(140deg, #ffffffed, #edf4ffdc); box-shadow: 0 3px 11px #28579b12; color: var(--blue-800); }
-.nav-tab:focus-visible { outline-offset: 2px; }
-.tab-count { min-width: 20px; padding: 2px 5px; border-radius: 12px; background: #f0f3f8; color: #96a1b2; font-size: 9px; text-align: center; }
-.nav-tab.is-active .tab-count { background: #e3edff; color: var(--blue-700); }
+.document-menu { position: relative; z-index: 3; width: max-content; max-width: 100%; margin-bottom: 15px; }
+.document-menu::after { position: absolute; top: 100%; left: 0; width: 100%; height: 9px; content: ""; }
+.menu-trigger { min-height: 49px; padding: 0 16px; display: flex; align-items: center; gap: 11px; border-radius: 10px; color: var(--blue-800); cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s; }
+.menu-trigger:hover, .document-menu.is-open .menu-trigger { border-color: #d2e0f5; background: #fffffff0; box-shadow: 0 7px 21px #29466c13; }
+.menu-trigger-icon { width: 19px; height: 19px; }
+.menu-trigger-label { font-size: 13px; font-weight: 700; }
+.menu-divider { width: 1px; height: 20px; background: #e2e8f1; }
+.active-document-label { color: #63718a; font-size: 12px; }
+.menu-chevron { width: 17px; height: 17px; margin-left: 6px; color: #7788a0; transition: transform .18s ease; }
+.document-menu.is-open .menu-chevron { transform: rotate(180deg); }
+.menu-trigger:focus-visible, .menu-item:focus-visible { outline-offset: 3px; }
+.document-menu-list { position: absolute; top: calc(100% + 7px); left: 0; width: min(300px, calc(100vw - 48px)); padding: 9px; border-color: #ffffffec; border-radius: 12px; box-shadow: 0 17px 38px #243d601c, 0 3px 9px #29466c0b; }
+.document-menu-list[hidden] { display: none; }
+.menu-heading { margin: 4px 9px 7px; color: #96a1b2; font-size: 9px; font-weight: 750; letter-spacing: 1px; }
+.menu-item { width: 100%; min-height: 43px; padding: 0 10px; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #64728a; font-size: 12px; text-align: left; cursor: pointer; transition: color .14s, background .14s, border-color .14s; }
+.menu-item:hover { background: #f6f9fe; color: var(--blue-800); }
+.menu-item.is-active { border-color: #deE8f8; background: #eef4ff; color: var(--blue-800); font-weight: 650; }
+.menu-item-number { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 7px; background: #f1f4f9; color: #8d99aa; font-size: 9px; font-weight: 700; }
+.menu-item.is-active .menu-item-number { background: #dfeaff; color: var(--blue-700); }
+.menu-item-mark { width: 6px; height: 6px; margin-left: auto; border-radius: 50%; background: transparent; }
+.menu-item.is-active .menu-item-mark { background: var(--blue-600); box-shadow: 0 0 0 3px #dce9ff; }
 
 .document-panel { min-height: 424px; margin-top: 16px; padding: 19px 23px 0; border-radius: 13px; }
 .panel-topline { min-height: 25px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #e8edf4a8; }
@@ -157,7 +170,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   .welcome-panel h1 { font-size: 38px; }
   .welcome-visual { transform: scale(.9); transform-origin: left center; }
   .login-card { padding-right: 28px; padding-left: 28px; }
-  .nav-tab { gap: 7px; padding-right: 9px; padding-left: 9px; font-size: 11px; }
 }
 
 @media (max-width: 640px) {
@@ -183,10 +195,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   .dashboard-intro { align-items: flex-start; flex-direction: column; gap: 12px; margin-bottom: 18px; }
   .dashboard-intro h1 { font-size: 32px; }
   .date-chip { padding: 7px 9px; }
-  .tabs-shell { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 6px; }
-  .nav-tab { min-height: 43px; justify-content: flex-start; gap: 7px; padding: 0 9px; font-size: 10px; }
-  .nav-tab > svg { width: 16px; height: 16px; }
-  .tab-count { min-width: 17px; margin-left: auto; font-size: 8px; }
+  .document-menu { width: 100%; }
+  .menu-trigger { width: 100%; }
+  .document-menu-list { width: 100%; }
   .document-panel { min-height: 390px; padding: 15px 15px 0; }
   .empty-state { min-height: 322px; padding: 28px 6px 22px; }
   .panel-footer { align-items: flex-start; flex-direction: column; justify-content: center; gap: 4px; padding: 9px 0; }

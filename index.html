@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f3f6fc">
   <meta name="description" content="Maquette de gestion des factures et documents d'approvisionnement.">
-  <title>Claircompta — Gestion documentaire</title>
+  <title>Clair-Contrôle — Gestion documentaire</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
@@ -15,13 +15,13 @@
 
   <main>
     <section id="login-screen" class="login-screen" aria-labelledby="login-title">
-      <a class="brand login-brand" href="#" aria-label="Claircompta, accueil">
+      <a class="brand login-brand" href="#" aria-label="Clair-Contrôle, accueil">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 32 32" fill="none">
             <path d="M8 22.5V9.5h8.5a5 5 0 0 1 0 10H8m8.5-5H24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span class="brand-name">clair<span>compta</span></span>
+        <span class="brand-name">Clair-<span>Contrôle</span></span>
       </a>
 
       <div class="login-layout">
@@ -103,18 +103,18 @@
           <p class="login-legal">Protégé et réservé aux utilisateurs autorisés.</p>
         </section>
       </div>
-      <footer class="page-footer"><span>© 2026 Claircompta</span><span>Votre espace de gestion, en toute simplicité</span></footer>
+      <footer class="page-footer"><span>© 2026 Clair-Contrôle</span><span>Votre espace de gestion, en toute simplicité</span></footer>
     </section>
 
     <section id="dashboard-screen" class="dashboard-screen" aria-labelledby="dashboard-title" hidden>
       <header class="dashboard-header glass-panel">
-        <a class="brand" href="#" aria-label="Claircompta, accueil">
+        <a class="brand" href="#" aria-label="Clair-Contrôle, accueil">
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="none">
               <path d="M8 22.5V9.5h8.5a5 5 0 0 1 0 10H8m8.5-5H24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
-          <span class="brand-name">clair<span>compta</span></span>
+          <span class="brand-name">Clair-<span>Contrôle</span></span>
         </a>
         <div class="header-right">
           <span class="demo-badge"><span></span> MODE DÉMO</span>
@@ -140,30 +140,36 @@
           </div>
         </div>
 
-        <nav class="tabs-shell glass-panel" role="tablist" aria-label="Documents de gestion">
-          <button id="tab-factures" class="nav-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="document-panel" tabindex="0" data-tab="factures">
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 2.8h5.2l3.8 3.8v10.6H6a1.8 1.8 0 0 1-1.8-1.8v-10A2.6 2.6 0 0 1 6.8 2.8ZM11 3v4h4m-7 3.4h4m-4 3.2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Factures</span>
-            <span class="tab-count">01</span>
+        <nav id="document-menu" class="document-menu" aria-label="Navigation des documents">
+          <button id="document-menu-trigger" class="menu-trigger glass-panel" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="document-menu-list">
+            <svg class="menu-trigger-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3.5 5h13m-13 5h13m-13 5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <span class="menu-trigger-label">Menu</span>
+            <span class="menu-divider" aria-hidden="true"></span>
+            <span id="active-document-label" class="active-document-label">Factures</span>
+            <svg class="menu-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
-          <button id="tab-bons-commande" class="nav-tab" type="button" role="tab" aria-selected="false" aria-controls="document-panel" tabindex="-1" data-tab="bons-commande">
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 5.2h12v11H4zM7 3v4.4m6-4.4v4.4M4 8.5h12m-8 3.2h4m-4 2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Bons de commande</span>
-            <span class="tab-count">02</span>
-          </button>
-          <button id="tab-bons-reception" class="nav-tab" type="button" role="tab" aria-selected="false" aria-controls="document-panel" tabindex="-1" data-tab="bons-reception">
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2.8 5h9v10h-9zm9 3h3.1l2.3 2.8V15h-5.4M5.5 15a1.7 1.7 0 1 0 3.4 0m5.1 0a1.7 1.7 0 1 0 3.4 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Bons de réception</span>
-            <span class="tab-count">03</span>
-          </button>
-          <button id="tab-bons-livraison" class="nav-tab" type="button" role="tab" aria-selected="false" aria-controls="document-panel" tabindex="-1" data-tab="bons-livraison">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M2.8 5h9v10h-9zm9 3h3.1l2.3 2.8V15h-5.4M5.5 15a1.7 1.7 0 1 0 3.4 0m5.1 0a1.7 1.7 0 1 0 3.4 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Bons de livraison</span>
-            <span class="tab-count">04</span>
-          </button>
+          <div id="document-menu-list" class="document-menu-list glass-panel" role="menu" aria-labelledby="document-menu-trigger" hidden>
+            <p class="menu-heading">GESTION DOCUMENTAIRE</p>
+            <button id="nav-factures" class="menu-item is-active" type="button" role="menuitem" data-tab="factures">
+              <span class="menu-item-number">01</span><span>Factures</span><span class="menu-item-mark" aria-hidden="true"></span>
+            </button>
+            <button id="nav-bons-commande" class="menu-item" type="button" role="menuitem" data-tab="bons-commande">
+              <span class="menu-item-number">02</span><span>Bons de commande</span><span class="menu-item-mark" aria-hidden="true"></span>
+            </button>
+            <button id="nav-bons-reception" class="menu-item" type="button" role="menuitem" data-tab="bons-reception">
+              <span class="menu-item-number">03</span><span>Bons de réception</span><span class="menu-item-mark" aria-hidden="true"></span>
+            </button>
+            <button id="nav-bons-livraison" class="menu-item" type="button" role="menuitem" data-tab="bons-livraison">
+              <span class="menu-item-number">04</span><span>Bons de livraison</span><span class="menu-item-mark" aria-hidden="true"></span>
+            </button>
+          </div>
         </nav>
 
-        <section id="document-panel" class="document-panel glass-panel" role="tabpanel" aria-labelledby="tab-factures" tabindex="0">
+        <section id="document-panel" class="document-panel glass-panel" role="region" aria-label="Factures" tabindex="0">
           <div class="panel-topline"><span class="panel-section-label">GESTION DOCUMENTAIRE</span><span class="panel-live"><span></span> Espace actif</span></div>
           <div class="empty-state">
             <div class="empty-icon" aria-hidden="true">
@@ -183,7 +189,7 @@
           </div>
         </section>
 
-        <footer class="dashboard-footer">© 2026 Claircompta <span>·</span> Gestion documentaire</footer>
+        <footer class="dashboard-footer">© 2026 Clair-Contrôle <span>·</span> Gestion documentaire</footer>
       </div>
     </section>
   </main>

@@ -33,7 +33,7 @@
   }
 
   const api = { DOCUMENT_TABS, getDocumentTab };
-  root.Claircompta = api;
+  root.ClairControle = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document === "undefined") return;
 
@@ -43,7 +43,10 @@
   const identityInput = document.getElementById("login-identity");
   const passwordInput = document.getElementById("login-password");
   const loginFeedback = document.getElementById("login-feedback");
-  const tabButtons = [...document.querySelectorAll('[role="tab"][data-tab]')];
+  const menu = document.getElementById("document-menu");
+  const menuTrigger = document.getElementById("document-menu-trigger");
+  const menuList = document.getElementById("document-menu-list");
+  const menuItems = [...menu.querySelectorAll('[role="menuitem"][data-tab]')];
   const panel = document.getElementById("document-panel");
   const feedbackMessages = {
     demoSignIn: "Connexion de démonstration. Aucune authentification réelle n’est configurée.",
@@ -73,17 +76,16 @@
     const selectedTab = getDocumentTab(tabId);
     if (!selectedTab) return false;
 
-    const selectedButton = tabButtons.find((button) => button.dataset.tab === tabId);
+    const selectedButton = menuItems.find((button) => button.dataset.tab === tabId);
     if (!selectedButton) return false;
 
-    for (const button of tabButtons) {
+    for (const button of menuItems) {
       const active = button === selectedButton;
       button.classList.toggle("is-active", active);
-      button.setAttribute("aria-selected", String(active));
-      button.tabIndex = active ? 0 : -1;
     }
 
-    panel.setAttribute("aria-labelledby", selectedButton.id);
+    document.getElementById("active-document-label").textContent = selectedTab.title;
+    panel.setAttribute("aria-label", selectedTab.title);
     document.getElementById("empty-state-title").textContent = selectedTab.title;
     document.getElementById("empty-state-description").textContent = selectedTab.description;
     document.querySelector(".empty-eyebrow").textContent = selectedTab.eyebrow;
@@ -92,9 +94,17 @@
     return true;
   }
 
+  function setMenuOpen(isOpen, restoreFocus) {
+    menu.classList.toggle("is-open", isOpen);
+    menuTrigger.setAttribute("aria-expanded", String(isOpen));
+    menuList.hidden = !isOpen;
+    if (restoreFocus) menuTrigger.focus();
+  }
+
   function showDashboard(identity) {
     const name = getDisplayName(identity);
     const displayName = name.split(/\s+/)[0];
+    passwordInput.value = "";
     document.getElementById("user-name").textContent = name;
     document.getElementById("user-avatar").textContent = displayName.slice(0, 1).toLocaleUpperCase("fr");
     document.getElementById("greeting-name").textContent = displayName;
@@ -102,7 +112,7 @@
     activateTab(DOCUMENT_TABS[0].id, false);
     loginScreen.hidden = true;
     dashboardScreen.hidden = false;
-    document.getElementById("tab-factures").focus();
+    menuTrigger.focus();
   }
 
   function showLogin() {
@@ -136,17 +146,59 @@
 
   document.getElementById("logout-button").addEventListener("click", showLogin);
 
-  for (const [index, button] of tabButtons.entries()) {
-    button.addEventListener("click", () => activateTab(button.dataset.tab, false));
+  menu.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") setMenuOpen(true, false);
+  });
+
+  menu.addEventListener("pointerleave", (event) => {
+    if (
+      event.pointerType === "mouse" &&
+      (!menu.contains(document.activeElement) || document.activeElement === menuTrigger)
+    ) {
+      setMenuOpen(false, false);
+    }
+  });
+
+  menu.addEventListener("focusout", (event) => {
+    if (!menu.contains(event.relatedTarget)) setMenuOpen(false, false);
+  });
+
+  menuTrigger.addEventListener("click", () => {
+    setMenuOpen(menuList.hidden, false);
+  });
+
+  menuTrigger.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      setMenuOpen(true, false);
+      menuItems[event.key === "ArrowDown" ? 0 : menuItems.length - 1].focus();
+    } else if (event.key === "Escape") {
+      setMenuOpen(false, false);
+    }
+  });
+
+  for (const [index, button] of menuItems.entries()) {
+    button.addEventListener("click", () => {
+      activateTab(button.dataset.tab, false);
+      setMenuOpen(false, true);
+    });
     button.addEventListener("keydown", (event) => {
       let nextIndex;
-      if (event.key === "ArrowRight") nextIndex = (index + 1) % tabButtons.length;
-      else if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+      if (event.key === "ArrowDown") nextIndex = (index + 1) % menuItems.length;
+      else if (event.key === "ArrowUp") nextIndex = (index - 1 + menuItems.length) % menuItems.length;
       else if (event.key === "Home") nextIndex = 0;
-      else if (event.key === "End") nextIndex = tabButtons.length - 1;
-      else return;
+      else if (event.key === "End") nextIndex = menuItems.length - 1;
+      else if (event.key === "Escape") {
+        event.preventDefault();
+        setMenuOpen(false, true);
+        return;
+      } else return;
       event.preventDefault();
-      activateTab(tabButtons[nextIndex].dataset.tab, true);
+      menuItems[nextIndex].focus();
     });
   }
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!menu.contains(event.target)) setMenuOpen(false, false);
+  });
 })(typeof globalThis !== "undefined" ? globalThis : this);
