@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fc">
+  <meta name="description" content="Maquette de gestion des factures et documents d'approvisionnement.">
+  <title>Claircompta — Gestion documentaire</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <main>
+    <section id="login-screen" class="login-screen" aria-labelledby="login-title">
+      <a class="brand login-brand" href="#" aria-label="Claircompta, accueil">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M8 22.5V9.5h8.5a5 5 0 0 1 0 10H8m8.5-5H24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">clair<span>compta</span></span>
+      </a>
+
+      <div class="login-layout">
+        <section class="welcome-panel" aria-label="Présentation">
+          <span class="welcome-kicker"><span></span> ESPACE DE GESTION</span>
+          <h1>Une vision plus claire de vos documents.</h1>
+          <p>Retrouvez vos factures et pièces d’approvisionnement dans un espace conçu pour simplifier votre quotidien.</p>
+          <div class="welcome-visual" aria-hidden="true">
+            <div class="visual-card visual-back"></div>
+            <div class="visual-card visual-front">
+              <span class="visual-document-icon">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M7 3.75h7l4 4v12.5H7a2 2 0 0 1-2-2v-12.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                  <path d="M14 4v4h4m-9 4h6m-6 3.5h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="visual-lines"><i></i><i></i><i></i></span>
+              <span class="visual-check">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path d="m5 10 3.2 3.2L15.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+            <span class="visual-orbit orbit-one"></span>
+            <span class="visual-orbit orbit-two"></span>
+          </div>
+          <p class="welcome-footnote"><span class="shield-icon" aria-hidden="true">✓</span> Un espace de travail simple et centralisé</p>
+        </section>
+
+        <section class="login-card" aria-label="Connexion à votre espace">
+          <div class="login-card-heading">
+            <span class="mobile-brand-mark" aria-hidden="true">C</span>
+            <p class="eyebrow">BON RETOUR</p>
+            <h2 id="login-title">Connectez-vous</h2>
+            <p>Accédez à votre espace de gestion documentaire.</p>
+          </div>
+
+          <form id="login-form">
+            <label class="field-label" for="login-identity">Adresse e-mail ou identifiant</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.3" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <input id="login-identity" name="identity" type="text" autocomplete="username" placeholder="nom@entreprise.fr" required>
+            </div>
+
+            <div class="password-label-row">
+              <label class="field-label" for="login-password">Mot de passe</label>
+              <a id="forgot-password" class="forgot-link" href="#mot-de-passe-oublie">Mot de passe oublié ?</a>
+            </div>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="5" y="10" width="14" height="10" rx="2.2" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M8 10V7.2a4 4 0 0 1 8 0V10m-4 4v2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Saisissez votre mot de passe" required>
+              <button id="toggle-password" class="password-toggle" type="button" aria-label="Afficher le mot de passe" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3 12s3.2-6 9-6 9 6 9 6-3.2 6-9 6-9-6-9-6Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                  <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/>
+                </svg>
+              </button>
+            </div>
+
+            <p id="login-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+            <button class="primary-button login-submit" type="submit">
+              Se connecter
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </form>
+
+          <div class="demo-notice">
+            <span aria-hidden="true">i</span>
+            <p>Maquette de démonstration : la connexion est simulée. Aucun mot de passe n’est vérifié ni transmis.</p>
+          </div>
+          <p class="login-legal">Protégé et réservé aux utilisateurs autorisés.</p>
+        </section>
+      </div>
+      <footer class="page-footer"><span>© 2026 Claircompta</span><span>Votre espace de gestion, en toute simplicité</span></footer>
+    </section>
+
+    <section id="dashboard-screen" class="dashboard-screen" aria-labelledby="dashboard-title" hidden>
+      <header class="dashboard-header glass-panel">
+        <a class="brand" href="#" aria-label="Claircompta, accueil">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M8 22.5V9.5h8.5a5 5 0 0 1 0 10H8m8.5-5H24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="brand-name">clair<span>compta</span></span>
+        </a>
+        <div class="header-right">
+          <span class="demo-badge"><span></span> MODE DÉMO</span>
+          <span class="user-avatar" id="user-avatar">U</span>
+          <span class="user-name" id="user-name">Utilisateur</span>
+          <button id="logout-button" class="logout-button" type="button">Déconnexion</button>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="dashboard-intro">
+          <div>
+            <p class="eyebrow">VOTRE ESPACE</p>
+            <h1 id="dashboard-title">Bonjour, <span id="greeting-name">vous</span></h1>
+            <p>Consultez et organisez vos documents de gestion au même endroit.</p>
+          </div>
+          <div class="date-chip">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="3" y="4.5" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6.5 2.8v3.4m7-3.4v3.4M3 8h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span id="today-date"></span>
+          </div>
+        </div>
+
+        <nav class="tabs-shell glass-panel" role="tablist" aria-label="Documents de gestion">
+          <button id="tab-factures" class="nav-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="document-panel" tabindex="0" data-tab="factures">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 2.8h5.2l3.8 3.8v10.6H6a1.8 1.8 0 0 1-1.8-1.8v-10A2.6 2.6 0 0 1 6.8 2.8ZM11 3v4h4m-7 3.4h4m-4 3.2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Factures</span>
+            <span class="tab-count">01</span>
+          </button>
+          <button id="tab-bons-commande" class="nav-tab" type="button" role="tab" aria-selected="false" aria-controls="document-panel" tabindex="-1" data-tab="bons-commande">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 5.2h12v11H4zM7 3v4.4m6-4.4v4.4M4 8.5h12m-8 3.2h4m-4 2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Bons de commande</span>
+            <span class="tab-count">02</span>
+          </button>
+          <button id="tab-bons-reception" class="nav-tab" type="button" role="tab" aria-selected="false" aria-controls="document-panel" tabindex="-1" data-tab="bons-reception">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2.8 5h9v10h-9zm9 3h3.1l2.3 2.8V15h-5.4M5.5 15a1.7 1.7 0 1 0 3.4 0m5.1 0a1.7 1.7 0 1 0 3.4 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Bons de réception</span>
+            <span class="tab-count">03</span>
+          </button>
+          <button id="tab-bons-livraison" class="nav-tab" type="button" role="tab" aria-selected="false" aria-controls="document-panel" tabindex="-1" data-tab="bons-livraison">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M2.8 5h9v10h-9zm9 3h3.1l2.3 2.8V15h-5.4M5.5 15a1.7 1.7 0 1 0 3.4 0m5.1 0a1.7 1.7 0 1 0 3.4 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Bons de livraison</span>
+            <span class="tab-count">04</span>
+          </button>
+        </nav>
+
+        <section id="document-panel" class="document-panel glass-panel" role="tabpanel" aria-labelledby="tab-factures" tabindex="0">
+          <div class="panel-topline"><span class="panel-section-label">GESTION DOCUMENTAIRE</span><span class="panel-live"><span></span> Espace actif</span></div>
+          <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">
+              <svg id="empty-state-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M15 7h13l9 9v23H15a3 3 0 0 1-3-3V10a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M28 8v9h9M19 26h13m-13 6h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="empty-eyebrow">VOTRE ESPACE FACTURES</p>
+            <h2 id="empty-state-title">Factures</h2>
+            <p id="empty-state-description" class="empty-description">Le traitement, la liste et le suivi du statut de vos factures prendront place ici.</p>
+            <span class="development-badge"><span></span> En cours de développement...</span>
+          </div>
+          <div class="panel-footer">
+            <span>Les prochains outils de gestion apparaîtront dans cet espace.</span>
+            <span class="secure-note"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6.5V5a4 4 0 0 1 8 0v1.5m-9 0h10v7H3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg> Espace de démonstration</span>
+          </div>
+        </section>
+
+        <footer class="dashboard-footer">© 2026 Claircompta <span>·</span> Gestion documentaire</footer>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
