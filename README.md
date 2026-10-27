@@ -16,7 +16,7 @@ Aucun serveur ou paquet n'est nécessaire pour afficher la maquette.
 
 - Saisissez un identifiant et un mot de passe non vides, puis choisissez **Se connecter**.
 - La connexion est simulée : elle ne vérifie aucun compte et ne protège pas l'application.
-- Survolez **Menu** pour afficher les rubriques **Factures**, **Bons de commande**, **Bons de réception** et **Bons de livraison**. Sur mobile, utilisez un appui sur le bouton **Menu**. Chaque rubrique affiche son espace de substitution « En cours de développement... ».
+- Survolez **Menu** pour afficher les rubriques documentaires. Survolez ou sélectionnez **Factures** pour choisir **Bon de commande**, **Lettre de commande**, **Accords** ou **Contrats**. Sur mobile, ouvrez le menu puis touchez **Factures**. Les autres rubriques sont **Bons de commande**, **Bons de réception** et **Bons de livraison**. Chaque espace affiche « En cours de développement... ».
 - **Mot de passe oublié** affiche un message de démonstration ; aucun courriel n'est envoyé.
 - **Déconnexion** revient à l'écran de connexion.
 

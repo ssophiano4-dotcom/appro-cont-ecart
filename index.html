@@ -154,9 +154,27 @@
           </button>
           <div id="document-menu-list" class="document-menu-list glass-panel" role="menu" aria-labelledby="document-menu-trigger" hidden>
             <p class="menu-heading">GESTION DOCUMENTAIRE</p>
-            <button id="nav-factures" class="menu-item is-active" type="button" role="menuitem" data-tab="factures">
-              <span class="menu-item-number">01</span><span>Factures</span><span class="menu-item-mark" aria-hidden="true"></span>
-            </button>
+            <div id="invoice-menu-group" class="invoice-menu-group" role="none">
+              <button id="nav-factures" class="menu-item invoice-menu-trigger is-active" type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="invoice-submenu">
+                <span class="menu-item-number">01</span><span>Factures</span>
+                <svg class="submenu-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m7.5 5 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div id="invoice-submenu" class="invoice-submenu glass-panel" role="menu" aria-label="Catégories de factures" hidden>
+                <p class="menu-heading">CATÉGORIES DE FACTURES</p>
+                <button id="nav-factures-bon-commande" class="menu-item invoice-submenu-item is-active" type="button" role="menuitem" data-page="factures-bon-commande">
+                  <span class="menu-item-number">01</span><span>Bon de commande</span><span class="menu-item-mark" aria-hidden="true"></span>
+                </button>
+                <button id="nav-factures-lettre-commande" class="menu-item invoice-submenu-item" type="button" role="menuitem" data-page="factures-lettre-commande">
+                  <span class="menu-item-number">02</span><span>Lettre de commande</span><span class="menu-item-mark" aria-hidden="true"></span>
+                </button>
+                <button id="nav-factures-accords" class="menu-item invoice-submenu-item" type="button" role="menuitem" data-page="factures-accords">
+                  <span class="menu-item-number">03</span><span>Accords</span><span class="menu-item-mark" aria-hidden="true"></span>
+                </button>
+                <button id="nav-factures-contrats" class="menu-item invoice-submenu-item" type="button" role="menuitem" data-page="factures-contrats">
+                  <span class="menu-item-number">04</span><span>Contrats</span><span class="menu-item-mark" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
             <button id="nav-bons-commande" class="menu-item" type="button" role="menuitem" data-tab="bons-commande">
               <span class="menu-item-number">02</span><span>Bons de commande</span><span class="menu-item-mark" aria-hidden="true"></span>
             </button>
@@ -169,7 +187,7 @@
           </div>
         </nav>
 
-        <section id="document-panel" class="document-panel glass-panel" role="region" aria-label="Factures" tabindex="0">
+        <section id="document-panel" class="document-panel glass-panel" role="region" aria-label="Factures — Bon de commande" tabindex="0">
           <div class="panel-topline"><span class="panel-section-label">GESTION DOCUMENTAIRE</span><span class="panel-live"><span></span> Espace actif</span></div>
           <div class="empty-state">
             <div class="empty-icon" aria-hidden="true">
@@ -178,9 +196,9 @@
                 <path d="M28 8v9h9M19 26h13m-13 6h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
               </svg>
             </div>
-            <p class="empty-eyebrow">VOTRE ESPACE FACTURES</p>
-            <h2 id="empty-state-title">Factures</h2>
-            <p id="empty-state-description" class="empty-description">Le traitement, la liste et le suivi du statut de vos factures prendront place ici.</p>
+            <p class="empty-eyebrow">FACTURES · BON DE COMMANDE</p>
+            <h2 id="empty-state-title">Bon de commande</h2>
+            <p id="empty-state-description" class="empty-description">Le suivi des factures associées aux bons de commande prendra place ici.</p>
             <span class="development-badge"><span></span> En cours de développement...</span>
           </div>
           <div class="panel-footer">

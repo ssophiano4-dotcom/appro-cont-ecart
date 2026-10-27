@@ -1,13 +1,34 @@
 (function (root) {
   "use strict";
 
-  const DOCUMENT_TABS = [
+  const INVOICE_SUBSECTIONS = [
     {
-      id: "factures",
-      title: "Factures",
-      description: "Le traitement, la liste et le suivi du statut de vos factures prendront place ici.",
-      eyebrow: "VOTRE ESPACE FACTURES"
+      id: "factures-bon-commande",
+      title: "Bon de commande",
+      description: "Le suivi des factures associées aux bons de commande prendra place ici.",
+      eyebrow: "FACTURES · BON DE COMMANDE"
     },
+    {
+      id: "factures-lettre-commande",
+      title: "Lettre de commande",
+      description: "Le classement et le suivi des factures associées aux lettres de commande seront disponibles ici.",
+      eyebrow: "FACTURES · LETTRE DE COMMANDE"
+    },
+    {
+      id: "factures-accords",
+      title: "Accords",
+      description: "Le suivi des factures liées aux accords et leurs justificatifs prendra place ici.",
+      eyebrow: "FACTURES · ACCORDS"
+    },
+    {
+      id: "factures-contrats",
+      title: "Contrats",
+      description: "La consultation des factures rattachées aux contrats sera organisée dans cet espace.",
+      eyebrow: "FACTURES · CONTRATS"
+    }
+  ];
+
+  const DOCUMENT_TABS = [
     {
       id: "bons-commande",
       title: "Bons de commande",
@@ -28,11 +49,13 @@
     }
   ];
 
-  function getDocumentTab(tabId) {
-    return DOCUMENT_TABS.find((tab) => tab.id === tabId) || null;
+  const DOCUMENT_PAGES = [...INVOICE_SUBSECTIONS, ...DOCUMENT_TABS];
+
+  function getDocumentPage(pageId) {
+    return DOCUMENT_PAGES.find((page) => page.id === pageId) || null;
   }
 
-  const api = { DOCUMENT_TABS, getDocumentTab };
+  const api = { INVOICE_SUBSECTIONS, DOCUMENT_TABS, DOCUMENT_PAGES, getDocumentPage };
   root.ClairControle = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document === "undefined") return;
@@ -46,8 +69,14 @@
   const menu = document.getElementById("document-menu");
   const menuTrigger = document.getElementById("document-menu-trigger");
   const menuList = document.getElementById("document-menu-list");
-  const menuItems = [...menu.querySelectorAll('[role="menuitem"][data-tab]')];
+  const menuItems = [...menuList.querySelectorAll(':scope > [role="menuitem"]')];
+  const invoiceGroup = document.getElementById("invoice-menu-group");
+  const invoiceTrigger = document.getElementById("nav-factures");
+  const rootMenuItems = [invoiceTrigger, ...menuItems];
+  const invoiceSubmenu = document.getElementById("invoice-submenu");
+  const invoiceItems = [...invoiceSubmenu.querySelectorAll('[role="menuitem"][data-page]')];
   const panel = document.getElementById("document-panel");
+  let activePageId = INVOICE_SUBSECTIONS[0].id;
   const feedbackMessages = {
     demoSignIn: "Connexion de démonstration. Aucune authentification réelle n’est configurée.",
     forgotPassword: "La récupération du mot de passe sera disponible avec la mise en place d’un service d’authentification."
@@ -72,32 +101,49 @@
     }).format(date);
   }
 
-  function activateTab(tabId, moveFocus) {
-    const selectedTab = getDocumentTab(tabId);
-    if (!selectedTab) return false;
+  function activatePage(pageId, moveFocus) {
+    const selectedPage = getDocumentPage(pageId);
+    if (!selectedPage) return false;
 
-    const selectedButton = menuItems.find((button) => button.dataset.tab === tabId);
+    const selectedButton = [...rootMenuItems, ...invoiceItems].find(
+      (button) => button.dataset.tab === pageId || button.dataset.page === pageId
+    );
     if (!selectedButton) return false;
 
-    for (const button of menuItems) {
+    for (const button of [...rootMenuItems, ...invoiceItems]) {
       const active = button === selectedButton;
-      button.classList.toggle("is-active", active);
+      button.classList.toggle(
+        "is-active",
+        button === invoiceTrigger ? pageId.startsWith("factures-") : active
+      );
     }
 
-    document.getElementById("active-document-label").textContent = selectedTab.title;
-    panel.setAttribute("aria-label", selectedTab.title);
-    document.getElementById("empty-state-title").textContent = selectedTab.title;
-    document.getElementById("empty-state-description").textContent = selectedTab.description;
-    document.querySelector(".empty-eyebrow").textContent = selectedTab.eyebrow;
+    activePageId = pageId;
+    const isInvoicePage = pageId.startsWith("factures-");
+    const parentLabel = isInvoicePage ? "Factures" : selectedPage.title;
+    document.getElementById("active-document-label").textContent =
+      isInvoicePage ? `Factures · ${selectedPage.title}` : selectedPage.title;
+    panel.setAttribute("aria-label", isInvoicePage ? `${parentLabel} — ${selectedPage.title}` : selectedPage.title);
+    document.getElementById("empty-state-title").textContent = selectedPage.title;
+    document.getElementById("empty-state-description").textContent = selectedPage.description;
+    document.querySelector(".empty-eyebrow").textContent = selectedPage.eyebrow;
 
     if (moveFocus) selectedButton.focus();
     return true;
+  }
+
+  function setInvoiceSubmenuOpen(isOpen, moveFocus) {
+    invoiceGroup.classList.toggle("is-open", isOpen);
+    invoiceTrigger.setAttribute("aria-expanded", String(isOpen));
+    invoiceSubmenu.hidden = !isOpen;
+    if (moveFocus) invoiceItems[0].focus();
   }
 
   function setMenuOpen(isOpen, restoreFocus) {
     menu.classList.toggle("is-open", isOpen);
     menuTrigger.setAttribute("aria-expanded", String(isOpen));
     menuList.hidden = !isOpen;
+    if (!isOpen) setInvoiceSubmenuOpen(false, false);
     if (restoreFocus) menuTrigger.focus();
   }
 
@@ -109,7 +155,7 @@
     document.getElementById("user-avatar").textContent = displayName.slice(0, 1).toLocaleUpperCase("fr");
     document.getElementById("greeting-name").textContent = displayName;
     document.getElementById("today-date").textContent = formatDate(new Date());
-    activateTab(DOCUMENT_TABS[0].id, false);
+    activatePage(activePageId, false);
     loginScreen.hidden = true;
     dashboardScreen.hidden = false;
     menuTrigger.focus();
@@ -159,6 +205,23 @@
     }
   });
 
+  invoiceGroup.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") setInvoiceSubmenuOpen(true, false);
+  });
+
+  invoiceGroup.addEventListener("pointerleave", (event) => {
+    if (
+      event.pointerType === "mouse" &&
+      (!invoiceGroup.contains(document.activeElement) || document.activeElement === invoiceTrigger)
+    ) {
+      setInvoiceSubmenuOpen(false, false);
+    }
+  });
+
+  invoiceGroup.addEventListener("focusout", (event) => {
+    if (!invoiceGroup.contains(event.relatedTarget)) setInvoiceSubmenuOpen(false, false);
+  });
+
   menu.addEventListener("focusout", (event) => {
     if (!menu.contains(event.relatedTarget)) setMenuOpen(false, false);
   });
@@ -171,21 +234,36 @@
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       setMenuOpen(true, false);
-      menuItems[event.key === "ArrowDown" ? 0 : menuItems.length - 1].focus();
+      rootMenuItems[event.key === "ArrowDown" ? 0 : rootMenuItems.length - 1].focus();
     } else if (event.key === "Escape") {
       setMenuOpen(false, false);
     }
   });
 
-  for (const [index, button] of menuItems.entries()) {
+  invoiceTrigger.addEventListener("click", () => {
+    setInvoiceSubmenuOpen(invoiceSubmenu.hidden, false);
+  });
+
+  invoiceTrigger.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      event.preventDefault();
+      setInvoiceSubmenuOpen(true, true);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      setMenuOpen(false, true);
+    }
+  });
+
+  for (const [index, button] of rootMenuItems.entries()) {
+    if (button === invoiceTrigger) continue;
     button.addEventListener("click", () => {
-      activateTab(button.dataset.tab, false);
+      activatePage(button.dataset.tab, false);
       setMenuOpen(false, true);
     });
     button.addEventListener("keydown", (event) => {
       let nextIndex;
-      if (event.key === "ArrowDown") nextIndex = (index + 1) % menuItems.length;
-      else if (event.key === "ArrowUp") nextIndex = (index - 1 + menuItems.length) % menuItems.length;
+      if (event.key === "ArrowDown") nextIndex = (index + 1) % rootMenuItems.length;
+      else if (event.key === "ArrowUp") nextIndex = (index - 1 + rootMenuItems.length) % rootMenuItems.length;
       else if (event.key === "Home") nextIndex = 0;
       else if (event.key === "End") nextIndex = menuItems.length - 1;
       else if (event.key === "Escape") {
@@ -194,7 +272,33 @@
         return;
       } else return;
       event.preventDefault();
-      menuItems[nextIndex].focus();
+      rootMenuItems[nextIndex].focus();
+    });
+  }
+
+  for (const [index, button] of invoiceItems.entries()) {
+    button.addEventListener("click", () => {
+      activatePage(button.dataset.page, false);
+      setMenuOpen(false, true);
+    });
+    button.addEventListener("keydown", (event) => {
+      let nextIndex;
+      if (event.key === "ArrowDown") nextIndex = (index + 1) % invoiceItems.length;
+      else if (event.key === "ArrowUp") nextIndex = (index - 1 + invoiceItems.length) % invoiceItems.length;
+      else if (event.key === "Home") nextIndex = 0;
+      else if (event.key === "End") nextIndex = invoiceItems.length - 1;
+      else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        invoiceTrigger.focus();
+        return;
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        setInvoiceSubmenuOpen(false, false);
+        invoiceTrigger.focus();
+        return;
+      } else return;
+      event.preventDefault();
+      invoiceItems[nextIndex].focus();
     });
   }
 
